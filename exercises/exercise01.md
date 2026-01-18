@@ -1,6 +1,6 @@
 # Exercise 01: World Database SQL Practice
 
-- Name:
+- Name: Mo Hajiyev
 - Course: Database for Analytics
 - Module: 1
 - Database Used: World Database
@@ -27,7 +27,10 @@
 Why were these data types selected?
 
 ### Answer
-_Write your explanation here._
+
+- The country.Population field is stored using an Integer data type. Generally, population fields store whole numbers without fractions but they can be big numbers up in millions. In this case, it is the ideal type for storage purposes as it only uses only 4 bytes (32 bits) per entry. We use minimal memory space while hitting our target data type. 
+
+- The country.LifeExpectancy field is stored using Decimal (3,1). Unlike population which is a whole number, life expectancy is a quotient and can be a decimal(float). 
 
 ### Screenshot
 _Show the table structure or DESCRIBE output._
@@ -46,8 +49,7 @@ DESCRIBE country;
 Why do you think this data type was selected?
 
 ### Answer
-_Write your explanation here._
-
+The country.IndepYear is using smallint because year field is a whole number and does not exceed 32,767. It is very efficient memorywise as it occupies only 2 bytes (16 bits). 
 ### Screenshot
 
 ```sql
@@ -64,8 +66,7 @@ DESCRIBE country;
 Explain why your proposed data type might be better in some situations.
 
 ### Answer
-_Write your explanation here._
-
+We could use YEAR (1 byte) data type which is half size of SMALLINT
 ---
 
 ## Question 4
@@ -189,3 +190,4 @@ WHERE Code = 'NAR';
 ### Screenshot
 
 ![Q10 Screenshot](screenshots/q10_delete_narnia.png)
+
