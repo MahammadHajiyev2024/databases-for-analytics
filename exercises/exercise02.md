@@ -196,7 +196,7 @@ LEFT JOIN countrylanguage AS cl ON c.code = cl.countrycode
 WHERE isofficial = 'T' 
 GROUP BY c.name
 HAVING COUNT(cl.language) > 2
-ORDER BY c.name
+ORDER BY c.name 
 ```
 
 ### Screenshot
