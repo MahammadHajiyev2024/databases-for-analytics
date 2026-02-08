@@ -31,7 +31,13 @@ Considering the World database, write a SQL statement that will **display the na
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT c.name AS country, COUNT(cl.language) AS number_official_languages
+FROM country AS c 
+JOIN countrylanguage AS cl ON c.code = cl.countrycode
+WHERE cl.isofficial = 'T'
+GROUP BY c.name 
+HAVING COUNT(cl.language) > 2
+ORDER BY 2 DESC
 ```
 
 ### Screenshot
@@ -49,7 +55,18 @@ After the `create_engine` command is executed, **what are the three statements r
 ### Python Code
 
 ```python
-# Your three Python statements here
+query = text("""
+    SELECT c.name AS country, COUNT(cl.language) AS number_official_languages
+    FROM country AS c 
+    JOIN countrylanguage AS cl ON c.code = cl.countrycode
+    WHERE cl.isofficial = 'T'
+    GROUP BY c.name 
+    HAVING COUNT(cl.language) > 2
+    ORDER BY 2 DESC
+""")
+
+df = pd.read_sql(query, engine)
+display(df)
 ```
 
 ### Screenshot
@@ -69,7 +86,17 @@ Using **Jupyter Notebooks**, write the Python code needed to produce the followi
 ### Python Code
 
 ```python
-# Your Python code here
+ax = df.plot(
+    kind='bar', 
+    x='country', 
+    y='number_official_languages', 
+    figsize=(8, 6),
+    legend=False
+)
+
+plt.xlabel('name')
+plt.ylabel('Count')
+plt.show()
 ```
 
 ### Screenshot
