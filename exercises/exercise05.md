@@ -42,7 +42,8 @@ year
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT DISTINCT(EXTRACT(year from sent_date)) AS year
+FROM emails
 ```
 
 ### Screenshot
@@ -65,7 +66,9 @@ count   year
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT COUNT(email_id) AS count, EXTRACT(year from sent_date) AS year 
+FROM emails
+GROUP BY year
 ```
 
 ### Screenshot
@@ -86,7 +89,9 @@ Only include emails that contain **both** a sent date and an opened date.
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT sent_date, opened_date, (opened_date - sent_date) AS interval
+FROM emails
+WHERE opened_date is not null AND sent_date is not null
 ```
 
 ### Screenshot
@@ -102,7 +107,9 @@ Using the `sqlda` database, write the SQL needed to show emails that contain an 
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT *
+FROM emails
+WHERE opened_date < sent_date
 ```
 
 ### Screenshot
@@ -119,7 +126,7 @@ After looking at the data, **why is this the case?**
 
 ### Answer
 
-_Write your explanation here._
+I first added interval column and ordered the results by it where I could see what the differences were between these two timestamps. The maximum difference I noticed was always less than 12 hours. This tells me that timezone differences between where the database is hosted and the customers might be the cause of this issue. 
 
 ### Screenshot (if requested by instructor)
 
@@ -161,7 +168,7 @@ CREATE TEMP TABLE customer_dealership_distance AS (
 ### Answer
 
 _Write your explanation here._
-
+First table creates a temporary table that calculates geometric point of the customer using point function. The second table accomplishes the same goal for the dealership. The last one uses <@> operator, takes in geometric points of customers and dealerships, and calculates Great-Circle distance between the two. 
 ---
 
 ## Question 7
@@ -177,7 +184,10 @@ For example - dealership 1 is below:
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT dealership_id, array_agg(CONCAT(last_name,',',first_name)) AS salesperson 
+FROM salespeople
+GROUP BY dealership_id 
+ORDER BY dealership_id
 ```
 
 ### Screenshot
@@ -202,7 +212,11 @@ Reference image:
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT s.dealership_id, d.state, COUNT(DISTINCT(s.salesperson_id)) AS count, array_agg(CONCAT(s.last_name,',', s.first_name)) AS salesperson 
+FROM salespeople AS s
+JOIN dealerships AS d on d.dealership_id = s.dealership_id
+GROUP BY s.dealership_id, d.state
+ORDER BY s.dealership_id
 ```
 
 ### Screenshot
@@ -218,7 +232,8 @@ Using the `sqlda` database, write the SQL needed to convert the **customers** ta
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT row_to_json(customers) AS customer_json
+FROM customers
 ```
 
 ### Screenshot
@@ -244,7 +259,14 @@ Reference image:
 ### SQL
 
 ```sql
--- Your SQL here
+SELECT row_to_json(t) FROM(
+
+SELECT s.dealership_id, d.state, COUNT(DISTINCT(s.salesperson_id)) AS count, array_agg(CONCAT(s.last_name,',', s.first_name)) AS salesperson 
+FROM salespeople AS s
+JOIN dealerships AS d on d.dealership_id = s.dealership_id
+GROUP BY s.dealership_id, d.state
+ORDER BY s.dealership_id) 
+t
 ```
 
 ### Screenshot
