@@ -1,7 +1,7 @@
 # Module 6 - Exercise 1: Creating a Data Warehouse
 From the Operational Model to the Dimensional Model
 
-- Name:
+- Name: Mo Hajiyev
 - Course: Database for Analytics
 - Module: 6
 
@@ -121,4 +121,6 @@ In 1-2 short paragraphs, explain:
 
 #### Design Notes
 
-_Write your design notes here._
+I went with Customer, Part, and Date dimensions because they handle the "who, what, and when" without making things messy. By adding zip codes, categories, and calendar quarters into their own tables, I avoided repeating text and keep the database compact. I set the grain to daily sales (one row per customer/part/day) you can still zoom in on a specific Tuesday in September, but there is not unnecessary amount of raw, unaggregated transaction logs.
+
+I carefully read through the requirements and made sure I’d be able to answer every question the business might need down the road. It was tempting to just load every field possible into the tables, but I quickly realized I couldn't afford to store data that would never actually be used. To fix this, I went through the analytical needs step-by-step and cut out any fields that didn't directly help answer the client's questions.
